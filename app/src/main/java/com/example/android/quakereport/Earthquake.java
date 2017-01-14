@@ -3,7 +3,7 @@ package com.example.android.quakereport;
 import java.lang.ref.SoftReference;
 
 /**
- * Created by Administrator on 2016/12/12.
+ * An {@link Earthquake} object contains information related to a single earthquake.
  */
 public class Earthquake {
     private double mMag;
