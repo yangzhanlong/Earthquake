@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,8 +46,10 @@ public class EarthquakeActivity extends AppCompatActivity
      */
     private static final int EARTHQUAKE_LOADER_ID = 1;
 
-    /** 列表为空时显示的 TextView */
+    /** TextView that is displayed when the list is empty */
     private TextView mEmptyStateTextView;
+
+    private ProgressBar mProgressBar;
 
     /** Adapter for the list of earthquakes */
     private EarthquakeArrayAdapter mAdapter;
@@ -58,6 +61,9 @@ public class EarthquakeActivity extends AppCompatActivity
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
+
+        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        earthquakeListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new adapter that takes an empty list of earthquakes as input
         mAdapter = new EarthquakeArrayAdapter(this, new ArrayList<Earthquake>());
@@ -85,9 +91,6 @@ public class EarthquakeActivity extends AppCompatActivity
             }
         });
 
-        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
-        earthquakeListView.setEmptyView(mEmptyStateTextView);
-
         // Get a reference to the LoaderManager, in order to interact with loaders.
         LoaderManager loaderManager = getLoaderManager();
 
@@ -109,6 +112,10 @@ public class EarthquakeActivity extends AppCompatActivity
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
         Log.v(LOG_TAG, "onLoadFinished");
 
+        // Hide loading indicator because the data has been loaded
+        mProgressBar = (ProgressBar) findViewById(R.id.loading_spinner);
+        mProgressBar.setVisibility(View.GONE);
+
         // Set empty state text to display "No earthquakes found."
         mEmptyStateTextView.setText(R.string.no_earthquakes);
 
@@ -118,7 +125,7 @@ public class EarthquakeActivity extends AppCompatActivity
         // If there is a valid list of {@link Earthquake}s, then add them to the adapter's
         // data set. This will trigger the ListView to update.
         if (earthquakes != null && !earthquakes.isEmpty()) {
-            mAdapter.addAll(earthquakes);
+            //mAdapter.addAll(earthquakes);
         }
     }
 
